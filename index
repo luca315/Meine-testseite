@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xion hub</title>
+    <style>
+        /* Grundlegende Stile */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+        }
+
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            color: white;
+            text-align: center;
+            padding: 16px 20px;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .info-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h2, h3 {
+            color: #4CAF50;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .weather {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #datetime {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .download-btns button {
+            padding: 12px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btns button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsives Design */
+        @media (max-width: 768px) {
+            nav a {
+                float: none;
+                width: 100%;
+                text-align: left;
+                padding: 14px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+  luca315 Testseite 
+</header>
+
+<!-- Navigation -->
+<nav>
+    <a href="index.html">Startseite</a>
+    <a href="wiki.html" target="_blank">Wiki</a>
+    <a href="download.html" target="_blank">Downloads</a>
+</nav>
+
+<div class="container">
+
+    <!-- Einführung / Willkommensnachricht -->
+    <div class="section info-section">
+        <h2>Willkommen auf unserer Seite!</h2>
+        <p>Diese Seite bietet eine Vielzahl von nützlichen Funktionen, darunter aktuelle Wetterinformationen, einen Wiki-Bereich mitn einem beispiel artikel, und eine Download-Sektion für verschiedene Betriebssysteme. Schauen Sie sich um und entdecken Sie, was wir zu bieten haben! Dies ist eine testseite  </p>
+    </div>
+
+    <!-- Übersicht der Funktionen -->
+    <div class="section info-section">
+        <h3>Funktionen der Seite</h3>
+        <ul>
+            <li>Wetterinformationen in Echtzeit basierend auf deinem Standort oder einem benutzerdefinierten Ort</li>
+            <li>Wiki-Bereich für nützliche Artikel und Anleitungen</li>
+            <li>Download-Links für verschiedene Betriebssysteme und Tools</li>
+            <li>Aktuelles Datum und Uhrzeit auf einen Blick</li>
+        </ul>
+    </div>
+
+    <!-- Aktuelles Datum und Uhrzeit -->
+    <div id="dateTime" class="section">
+        <h2>Aktuelle Uhrzeit</h2>
+        <p id="datetime"></p>
+    </div>
+
+    <!-- Wetter Sektion -->
+    <div id="weather" class="weather">
+        <h3>Wetter für einen benutzerdefinierten Ort</h3>
+        <!-- Eingabefeld für den Ort -->
+        <input type="text" id="cityInput" placeholder="Geben Sie einen Ort ein" style="padding: 10px; width: 100%; font-size: 1.1em;">
+        <button onclick="getWeatherByCity()" style="padding: 10px; background-color: #4CAF50; color: white; font-size: 1.1em; border: none; cursor: pointer; width: 100%;">Wetter anzeigen</button>
+
+        <div id="weatherData" style="margin-top: 15px;">
+            <p><strong>Stadt:</strong> <span id="city">--</span></p>
+            <p>Temperatur: <strong><span id="temperature">--</span> °C</strong></p>
+            <p>Wetter: <strong><span id="weatherDescription">--</span></strong></p>
+            <p>Wind: <strong><span id="windSpeed">--</span> km/h</strong></p>
+        </div>
+    </div>
+
+    <!-- Konfetti-Effekt für Neujahr -->
+    <div class="confetti" id="confetti"></div>
+
+</div>
+
+<script>
+    // Funktion für das aktuelle Datum und Uhrzeit mit Wochentag und Monat
+    function updateDateTime() {
+        var now = new Date();
+        var daysOfWeek = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+        var months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+        var dayOfWeek = daysOfWeek[now.getDay()];
+        var month = months[now.getMonth()];
+        var date = now.getDate();
+        var year = now.getFullYear();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+
+        // Formatieren der Zeit
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        // Erstellen der vollständigen Zeitangabe
+        var datetime = `${dayOfWeek}, ${date}. ${month} ${year} - ${hours}:${minutes}:${seconds}`;
+        document.getElementById('datetime').textContent = datetime;
+    }
+
+    // Update die Zeit jede Sekunde
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    // Funktion zum Abrufen des Wetters basierend auf einem benutzerdefinierten Ort
+    function getWeatherByCity() {
+        var city = document.getElementById("cityInput").value;
+        if (city) {
+            // API Key für OpenWeatherMap (Bitte ersetze diesen durch deinen eigenen API Key)
+            var apiKey = 'DEIN_API_KEY'; // Hole dir deinen API-Key von OpenWeatherMap
+            var url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=de&appid=${apiKey}`;
+
+            // API Aufruf für Wetterdaten
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Wetterdaten extrahieren
+                    if (data.cod === 200) {
+                        var cityName = data.name;
+                        var temperature = data.main.temp;
+                        var weatherDescription = data.weather[0].description;
+                        var windSpeed = data.wind.speed;
+
+                        // Wetterdaten anzeigen
+                        document.getElementById('city').textContent = cityName;
+                        document.getElementById('temperature').textContent = temperature;
+                        document.getElementById('weatherDescription').textContent = weatherDescription;
+                        document.getElementById('windSpeed').textContent = windSpeed;
+                    } else {
+                        alert("Ort nicht gefunden. Bitte versuchen Sie es erneut.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Fehler beim Abrufen der Wetterdaten:', error);
+                });
+        } else {
+            alert("Bitte geben Sie einen Ort ein.");
+        }
+    }
+</script>
+Diese seite ist unter apache 2.0 Lizenz
+</body>
+</html>
